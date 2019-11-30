@@ -4,44 +4,47 @@
 #include <qnetworkaccessmanager.h>
 #include <qudpsocket.h>
 #include <qnetworkdatagram.h>
+#include <iostream>
+
+using namespace std;
 
 #define type_t char
 
 #define STANDARD_PORT 3500
-#define FRAME_PAYLOAD_SIZE 72
+#define FRAME_PAYLOAD_SIZE 128
 
-#define NIN '0';
-#define EOT '1'
-#define DATA '2'
-#define META '3'
-#define INIT '4'
-#define ACKWM '5' // TODO: This is defined by lowercase letters in the client code
+#define CHUNK '0'
+#define META '1'
+#define INIT '2'
+#define ACKWM '3'
+#define P_ACKWM '4'
+#define LAST_CHUNK '5'
 
-struct type
+struct Type
 {
     type_t  _type;
 };
 
 struct Header
 {
-    type    _type; // Allocates 1 bytes for type identification
-    short     _src; // Allocates 2 bytes for source adress
-    short     _dst; // Allocates 2 bytes for destination adress
-    char    _protocol; // Allocates 1 byte for protocol identification
+    Type    type; // Allocates 1 bytes for type identification
+    ushort   src; // Allocates 2 bytes for source adress
+    ushort   dst; // Allocates 2 bytes for destination adress
+    char    protocol; // Allocates 1 byte for protocol identification
+    unsigned int magic_key; // Allocates 4 byres for unique identification
 
 };
 
 struct Data
 {
-    type    _type;
+    Type    _type;
     char    _data[0];
 };
 
 
 union Raw_Frame
 {
-    char    _raw[FRAME_PAYLOAD_SIZE];
-
+    char    raw[FRAME_PAYLOAD_SIZE];
     Header  _header;
     Data    _data;
 };
@@ -62,8 +65,11 @@ class NetworkController : public QObject
 public:
     NetworkController();
 
-    void setPort(quint16 port);
+    bool isListening() const;
 
+    bool setPort(quint16 port);
+    bool startListening();
+    void stopListening();
 
 signals:
     void state_changed(Formatted_Frame &frame);
@@ -72,12 +78,11 @@ private slots:
     void recieve();
 
 private:
-
+    void copyArray(char *dst, char *src, uint len);
     void extractData(QNetworkDatagram dGram);
 
-    QUdpSocket _socket;
-    QList<QNetworkDatagram>_datagrams;
-
+    bool _isListening = false;
+    QUdpSocket *_socket;
 };
 
 #endif // NETWORKCONTROLLER_H

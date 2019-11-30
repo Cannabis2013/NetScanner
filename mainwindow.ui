@@ -121,7 +121,7 @@ QLineEdit
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton">
+            <widget class="QPushButton" name="start_but">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
                <horstretch>0</horstretch>
@@ -134,7 +134,7 @@ QLineEdit
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="stop_but">
              <property name="enabled">
               <bool>false</bool>
              </property>
@@ -197,12 +197,7 @@ border: 0px solid;</string>
         </column>
         <column>
          <property name="text">
-          <string>Source IP</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Destination IP</string>
+          <string>Source port</string>
          </property>
         </column>
         <column>
@@ -213,6 +208,16 @@ border: 0px solid;</string>
         <column>
          <property name="text">
           <string>Data</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Description</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Time recieved</string>
          </property>
         </column>
        </widget>
@@ -249,5 +254,22 @@ border: 0px solid;</string>
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>treeWidget</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>54</x>
+     <y>112</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>242</x>
+     <y>105</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

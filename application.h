@@ -2,7 +2,7 @@
 #define IAPPLICATIONINTERFACE_H
 
 
-class IApplicationInterface
+class Application
 {
 public:
 
