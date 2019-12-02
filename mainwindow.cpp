@@ -7,14 +7,17 @@ MainWindow::MainWindow()
 {
     ui->setupUi(this);
 
+
     nCon = new NetworkController();
     treeWidget = ui->treeWidget;
-    portSelector = ui->lineEdit;
+    inboundPortSelector = ui->lineEdit;
+    outboundPortSelector = ui->lineEdit_2;
+    typeBox = ui->TypeSelector;
 
     connect(nCon,&NetworkController::state_changed,this,&MainWindow::appendData);
 
     nCon->setPort(STANDARD_PORT);
-    portSelector->setText(QString::number(STANDARD_PORT));
+    inboundPortSelector->setText(QString::number(STANDARD_PORT));
     on_start_but_clicked();
 }
 
@@ -39,10 +42,10 @@ void MainWindow::appendData(Formatted_Packet &f_frame)
 void MainWindow::on_lineEdit_returnPressed()
 {
     on_stop_but_clicked();
-    quint16 port = static_cast<quint16>(portSelector->text().toInt());
+    quint16 port = static_cast<quint16>(inboundPortSelector->text().toInt());
     if(!nCon->setPort(port))
     {
-        portSelector->setText(currentPort);
+        inboundPortSelector->setText(currentPort);
         on_start_but_clicked();
         return;
     }
@@ -52,7 +55,7 @@ void MainWindow::on_lineEdit_returnPressed()
 
 void MainWindow::on_start_but_clicked()
 {
-    currentPort = portSelector->text();
+    currentPort = inboundPortSelector->text();
     nCon->startListening();
     ui->start_but->setText("Is listening");
     ui->start_but->setEnabled(false);
@@ -65,4 +68,17 @@ void MainWindow::on_stop_but_clicked()
     ui->stop_but->setEnabled(false);
     ui->start_but->setText("Start listening");
     ui->start_but->setEnabled(true);
+}
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    Frame_PTU frame;
+
+    if(typeBox->currentText() == "INIT")
+    {
+        Packet packet;
+        packet.header.type.type = INIT;
+        packet.header.dst = outboundPortSelector->text().toUShort();
+        NetworkController::copyArray(frame.raw,packet.raw,FRAME_PAYLOAD_SIZE + ADDITIONAL_OVERHEAD);
+    }
 }

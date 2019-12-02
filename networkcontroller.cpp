@@ -26,6 +26,13 @@ void NetworkController::stopListening()
     _socket->disconnect(_socket,&QUdpSocket::readyRead,this,&NetworkController::recieve);
 }
 
+qint64 NetworkController::sendFrame(Frame_PTU ptu,ushort port)
+{
+    QUdpSocket *socket = new QUdpSocket(this);
+
+    return socket->writeDatagram(ptu.raw,150,QHostAddress::LocalHost,port);
+}
+
 void NetworkController::recieve()
 {
     cout << "Something recieved" << endl;
@@ -50,30 +57,30 @@ void NetworkController::extractData(QNetworkDatagram dGram)
     char* data = dGram.data().data();
     copyArray(frame.raw,data,FRAME_PAYLOAD_SIZE);
 
-    Raw_Packet f;
+    Packet f;
     copyArray(f.raw,frame.frame.payload,FRAME_PAYLOAD_SIZE);
 
-    if(f._header.type._type == INIT)
+    if(f.header.type.type == INIT)
     {
         f_frame.type = "Initial frame";
 
-        f_frame.src_adrs = QString::number(f._header.src);
-        f_frame.dst_adrs = QString::number(f._header.dst);
+        f_frame.src_adrs = QString::number(f.header.src);
+        f_frame.dst_adrs = QString::number(f.header.dst);
 
-        f_frame.protocol = (f._header.protocol == 1) ? "UDP" : "Unknown";
+        f_frame.protocol = (f.header.protocol == 1) ? "UDP" : "Unknown";
     }
-    else if (f._header.type._type == ACKWM) {
+    else if (f.header.type.type == ACK) {
         f_frame.type = "acknowledgement frame";
 
-        QHostAddress source_adress(static_cast<quint32>(f._header.src));
-        QHostAddress destination_adress(static_cast<quint32>(f._header.dst));
+        QHostAddress source_adress(static_cast<quint32>(f.header.src));
+        QHostAddress destination_adress(static_cast<quint32>(f.header.dst));
         f_frame.src_adrs = source_adress.toString();
         f_frame.dst_adrs = destination_adress.toString();
 
-        f_frame.protocol = (f._header.protocol == 1) ? "UDP" : "Unknown";
+        f_frame.protocol = (f.header.protocol == 1) ? "UDP" : "Unknown";
     }
-    else if (f._data._type._type == CHUNK) {
-        f_frame.data = f._data._data;
+    else if (f.chunk.type.type == CHUNK) {
+        f_frame.data = f.chunk.data;
     }
 
     emit state_changed(f_frame);

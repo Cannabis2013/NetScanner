@@ -14,27 +14,11 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QPushButton
-{
-	margin: 0px;
-	padding:0px;
-	
-	background-color: rgb(49, 49, 49);
-	color:white;
-}
-QLineEdit
-{
-	background-color:lightbrown;
-	color: white;
-}</string>
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <property name="styleSheet">
-    <string notr="true">QWidget#centralWidget
-{
-	background-color: rgb(115, 18, 5);
-}
-</string>
+    <string notr="true"/>
    </property>
    <layout class="QGridLayout" name="gridLayout_2">
     <property name="leftMargin">
@@ -55,11 +39,29 @@ QLineEdit
     <item row="0" column="0">
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tab">
        <property name="styleSheet">
-        <string notr="true">background-color: rgb(115, 18, 5);</string>
+        <string notr="true">QWidget#tab
+{
+	background-color: rgb(115, 18, 5);
+}
+
+
+QPushButton
+{
+	margin: 0px;
+	padding:0px;
+	
+	background-color: rgb(49, 49, 49);
+	color:white;
+}
+QLineEdit
+{
+	background-color:lightbrown;
+	color: white;
+}</string>
        </property>
        <attribute name="title">
         <string>Listener explorer</string>
@@ -254,10 +256,248 @@ border: 0px solid;</string>
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_2">
+      <widget class="QWidget" name="tab2">
+       <property name="styleSheet">
+        <string notr="true">QWidget#tab2
+{
+	background-color: rgb(115, 18, 5);
+}
+
+QPushButton
+{
+	
+	background-color: rgb(49, 49, 49);
+	color:white;
+}
+QLineEdit
+{
+	background-color:lightbrown;
+	color: white;
+}</string>
+       </property>
        <attribute name="title">
         <string>Packet explorer</string>
        </attribute>
+       <layout class="QGridLayout" name="gridLayout_5">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="0">
+         <layout class="QGridLayout" name="gridLayout_4">
+          <item row="1" column="1">
+           <widget class="QTextBrowser" name="textBrowser">
+            <property name="styleSheet">
+             <string notr="true">background-color: rgb(162, 162, 162);</string>
+            </property>
+            <property name="readOnly">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <layout class="QVBoxLayout" name="verticalLayout_4">
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <item>
+               <widget class="QLabel" name="label_3">
+                <property name="text">
+                 <string>Type</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QComboBox" name="TypeSelector">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>128</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>128</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <item>
+                 <property name="text">
+                  <string>INIT</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>META</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>CHUNK</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>ACK</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>P_ACK</string>
+                 </property>
+                </item>
+                <item>
+                 <property name="text">
+                  <string>LAST_CHUNK</string>
+                 </property>
+                </item>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <item>
+               <widget class="QLabel" name="label_2">
+                <property name="text">
+                 <string>UDP port:</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="lineEdit_2">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>128</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="maximumSize">
+                 <size>
+                  <width>128</width>
+                  <height>16777215</height>
+                 </size>
+                </property>
+                <property name="text">
+                 <string>45000</string>
+                </property>
+                <property name="placeholderText">
+                 <string>udp port</string>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </item>
+            <item>
+             <spacer name="verticalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Vertical</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>20</width>
+                <height>40</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item row="0" column="1">
+           <widget class="QLabel" name="label">
+            <property name="font">
+             <font>
+              <pointsize>16</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Message</string>
+            </property>
+            <property name="textFormat">
+             <enum>Qt::AutoText</enum>
+            </property>
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QWidget" name="ButtonWidget" native="true">
+            <layout class="QHBoxLayout" name="horizontalLayout">
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
+             <property name="rightMargin">
+              <number>0</number>
+             </property>
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
+             <item>
+              <widget class="QPushButton" name="pushButton">
+               <property name="text">
+                <string>Clear</string>
+               </property>
+               <property name="flat">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_2">
+               <property name="text">
+                <string>Send</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="0">
+         <widget class="QTreeWidget" name="treeWidget_2">
+          <property name="styleSheet">
+           <string notr="true">background-color: rgb(61, 51, 47);
+color: rgb(0, 145, 177);
+border: 0px solid;</string>
+          </property>
+          <column>
+           <property name="text">
+            <string notr="true">1</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </widget>
     </item>

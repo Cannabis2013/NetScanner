@@ -21,9 +21,9 @@ SOURCES += \
     networkcontroller.cpp
 
 HEADERS += \
-    application.h \
     mainwindow.h \
-    networkcontroller.h
+    networkcontroller.h \
+    structures.h
 
 FORMS += \
     mainwindow.ui

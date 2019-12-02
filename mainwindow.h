@@ -6,11 +6,14 @@
 #include <qlineedit.h>
 #include <qtreewidget.h>
 #include <QTreeWidgetItem>
+#include <qcombobox.h>
 #include "networkcontroller.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
+
+#define STANDARD_PORT 45000
 
 class MainWindow : public QMainWindow
 {
@@ -27,6 +30,8 @@ private slots:
     void on_start_but_clicked();
     void on_stop_but_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -34,6 +39,7 @@ private:
 
     NetworkController *nCon;
     QTreeWidget *treeWidget;
-    QLineEdit *portSelector;
+    QLineEdit *inboundPortSelector,*outboundPortSelector;
+    QComboBox *typeBox;
 };
 #endif // MAINWINDOW_H
