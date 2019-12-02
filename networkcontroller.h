@@ -35,7 +35,7 @@ struct Header
 
 };
 
-struct Data
+struct Chunk
 {
     Type    _type;
     char    _data[0];
@@ -46,7 +46,7 @@ union Raw_Packet
 {
     char    raw[FRAME_PAYLOAD_SIZE];
     Header  _header;
-    Data    _data;
+    Chunk    _data;
 };
 
 struct Formatted_Packet
