@@ -3,12 +3,15 @@
 NetworkController::NetworkController()
 {
     _socket = new QUdpSocket(this);
-    qRegisterMetaType<Formatted_Frame>("Formatted_Frame");
+    qRegisterMetaType<Formatted_Packet>("Formatted_Frame");
 }
 
 bool NetworkController::setPort(quint16 port)
 {
-    return _socket->bind(port);
+    if(_socket->state() == QAbstractSocket::UnconnectedState)
+        return _socket->bind(port);
+    else
+        return false;
 }
 
 bool NetworkController::startListening()
@@ -19,7 +22,8 @@ bool NetworkController::startListening()
 
 void NetworkController::stopListening()
 {
-    disconnect(_socket,&QUdpSocket::readyRead,this,&NetworkController::recieve);
+    _socket->disconnectFromHost();
+    _socket->disconnect(_socket,&QUdpSocket::readyRead,this,&NetworkController::recieve);
 }
 
 void NetworkController::recieve()
@@ -40,11 +44,14 @@ void NetworkController::copyArray(char *dst, char *src, uint len)
 
 void NetworkController::extractData(QNetworkDatagram dGram)
 {
-    Raw_Frame f;
+    Frame_PTU frame;
 
-    Formatted_Frame f_frame;
+    Formatted_Packet f_frame;
     char* data = dGram.data().data();
-    copyArray(f.raw,data,FRAME_PAYLOAD_SIZE);
+    copyArray(frame.raw,data,FRAME_PAYLOAD_SIZE);
+
+    Raw_Packet f;
+    copyArray(f.raw,frame.frame.payload,FRAME_PAYLOAD_SIZE);
 
     if(f._header.type._type == INIT)
     {

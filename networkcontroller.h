@@ -10,7 +10,7 @@ using namespace std;
 
 #define type_t char
 
-#define STANDARD_PORT 3500
+#define STANDARD_PORT 45000
 #define FRAME_PAYLOAD_SIZE 128
 
 #define CHUNK '0'
@@ -42,14 +42,14 @@ struct Data
 };
 
 
-union Raw_Frame
+union Raw_Packet
 {
     char    raw[FRAME_PAYLOAD_SIZE];
     Header  _header;
     Data    _data;
 };
 
-struct Formatted_Frame
+struct Formatted_Packet
 {
     QString src_adrs;
     QString dst_adrs;
@@ -58,6 +58,32 @@ struct Formatted_Frame
     QString descr;
     QString protocol;
 };
+
+typedef struct
+{
+    ushort src; // 2 bytes allocated
+    ushort dst; // 2 bytes allocated
+    u_int8_t lenght; // 1 bytes allocated
+    u_int8_t protocol; // 1 bytes allocated
+}Frame_Header; // 6 bytes total allocated for this structure
+
+typedef struct
+{
+    char            preAmble[10]; // 10 bytes allocated
+    uint            unique_adress; // 4 bytes allocated
+    Frame_Header    header; // 6 bytes allocated
+    char            payload[128]; // 128 bytes allocated
+    ushort          checksum; // 2 bytes allocated
+
+}Frame; // 10 + 4 + 6 + 128 + 2 = 150 bytes total allocated for this structure
+
+typedef union
+{
+    char    raw[150];
+    Frame   frame; // 150 bytes allocated
+
+}Frame_PTU;
+
 
 class NetworkController : public QObject
 {
@@ -72,7 +98,7 @@ public:
     void stopListening();
 
 signals:
-    void state_changed(Formatted_Frame &frame);
+    void state_changed(Formatted_Packet &frame);
 
 private slots:
     void recieve();

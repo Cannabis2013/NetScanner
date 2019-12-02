@@ -12,6 +12,10 @@ MainWindow::MainWindow()
     portSelector = ui->lineEdit;
 
     connect(nCon,&NetworkController::state_changed,this,&MainWindow::appendData);
+
+    nCon->setPort(STANDARD_PORT);
+    portSelector->setText(QString::number(STANDARD_PORT));
+    on_start_but_clicked();
 }
 
 MainWindow::~MainWindow()
@@ -19,7 +23,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::appendData(Formatted_Frame &f_frame)
+void MainWindow::appendData(Formatted_Packet &f_frame)
 {
 
     QTreeWidgetItem *item = new QTreeWidgetItem(QStringList()
@@ -34,14 +38,21 @@ void MainWindow::appendData(Formatted_Frame &f_frame)
 
 void MainWindow::on_lineEdit_returnPressed()
 {
+    on_stop_but_clicked();
     quint16 port = static_cast<quint16>(portSelector->text().toInt());
-    nCon->setPort(port);
+    if(!nCon->setPort(port))
+    {
+        portSelector->setText(currentPort);
+        on_start_but_clicked();
+        return;
+    }
     on_start_but_clicked();
 
 }
 
 void MainWindow::on_start_but_clicked()
 {
+    currentPort = portSelector->text();
     nCon->startListening();
     ui->start_but->setText("Is listening");
     ui->start_but->setEnabled(false);

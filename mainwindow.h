@@ -21,15 +21,16 @@ public:
     ~MainWindow();
 
 private slots:
-    void appendData(Formatted_Frame &f_frame);
+    void appendData(Formatted_Packet &f_frame);
     void on_lineEdit_returnPressed();
 
     void on_start_but_clicked();
-
     void on_stop_but_clicked();
 
 private:
     Ui::MainWindow *ui;
+
+    QString currentPort;
 
     NetworkController *nCon;
     QTreeWidget *treeWidget;
