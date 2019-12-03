@@ -17,7 +17,7 @@
 
 #define type_t char
 
-#define ADDITIONAL_OVERHEAD 4
+#define ADDITIONAL_OVERHEAD 5
 #define TOTAL_PAYLOAD_SIZE (FRAME_PAYLOAD_SIZE + ADDITIONAL_OVERHEAD)
 
 /*
@@ -50,7 +50,7 @@ typedef struct
 typedef struct
 {
     Type    type; // Allocates 1 byte
-    char    data[FRAME_PAYLOAD_SIZE]; // 128 bytes allocated
+    char    data[FRAME_PAYLOAD_SIZE + ADDITIONAL_OVERHEAD]; // 128 bytes allocated
     uint    chunk_size; // Allocates 4 bytes
 }Chunk; // At least 5 bytes allocation
 
@@ -76,10 +76,10 @@ typedef struct
 {
     ushort src; // 2 bytes allocated
     ushort dst; // 2 bytes allocated
-#if defined __LINUX__ && __GNUC
+#if defined __GNUC__ && __linux__
     u_int8_t lenght; // 1 bytes allocated
     u_int8_t protocol; // 1 bytes allocated
-#elif defined __WIN32 || __WIN64
+#elif defined __WIN32 || __WIN64 || __MINGW64__
     quint8 lenght; // 1 bytes allocated
     quint8 protocol; // 1 bytes allocated
 #endif
@@ -90,14 +90,16 @@ typedef struct
     char            preAmble[10]; // 10 bytes allocated
     uint            unique_adress; // 4 bytes allocated
     Frame_Header    header; // 6 bytes allocated
-    char            payload[128]; // 128 bytes allocated
+    char            payload[FRAME_PAYLOAD_SIZE + ADDITIONAL_OVERHEAD]; // 133 bytes allocated
     ushort          checksum; // 2 bytes allocated
 
-}Frame; // 10 + 4 + 6 + 128 + 2 = 150 bytes total allocated for this structure
+}Frame; // 10 + 4 + 6 + 133 + 2 = 155 bytes total allocated for this structure
+
+#define FRAME_SIZE 155
 
 typedef union
 {
-    char    raw[150];
+    char    raw[FRAME_SIZE];
     Frame   frame; // 150 bytes allocated
 
 }Frame_PTU;

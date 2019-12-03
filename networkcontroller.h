@@ -24,7 +24,7 @@ public:
     bool startListening();
     void stopListening();
 
-    qint64 sendFrame(Frame_PTU ptu, ushort port);
+    static qint64 sendFrame(Frame_PTU ptu, ushort port);
 
     static void copyArray(char *dst, char *src, uint len);
 

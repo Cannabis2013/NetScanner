@@ -13,6 +13,7 @@ MainWindow::MainWindow()
     inboundPortSelector = ui->lineEdit;
     outboundPortSelector = ui->lineEdit_2;
     typeBox = ui->TypeSelector;
+    msgBrowser = ui->messageSelector;
 
     connect(nCon,&NetworkController::state_changed,this,&MainWindow::appendData);
 
@@ -73,12 +74,27 @@ void MainWindow::on_stop_but_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     Frame_PTU frame;
+    frame.frame.header.dst = outboundPortSelector->text().toUShort();
 
     if(typeBox->currentText() == "INIT")
     {
         Packet packet;
         packet.header.type.type = INIT;
         packet.header.dst = outboundPortSelector->text().toUShort();
-        NetworkController::copyArray(frame.raw,packet.raw,FRAME_PAYLOAD_SIZE + ADDITIONAL_OVERHEAD);
+        NetworkController::copyArray(frame.frame.payload,packet.raw,FRAME_PAYLOAD_SIZE + ADDITIONAL_OVERHEAD);
     }
+    else if(typeBox->currentText() == "META")
+    {
+        Packet packet;
+        packet.header.type.type = META;
+        packet.header.dst = outboundPortSelector->text().toUShort();
+        NetworkController::copyArray(frame.frame.payload,packet.raw,FRAME_PAYLOAD_SIZE + ADDITIONAL_OVERHEAD);
+    }
+
+    NetworkController::sendFrame(frame,outboundPortSelector->text().toUShort());
+}
+
+void MainWindow::on_TypeSelector_currentIndexChanged(const QString &arg1)
+{
+
 }

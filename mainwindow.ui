@@ -297,7 +297,7 @@ QLineEdit
         <item row="0" column="0">
          <layout class="QGridLayout" name="gridLayout_4">
           <item row="1" column="1">
-           <widget class="QTextBrowser" name="textBrowser">
+           <widget class="QTextBrowser" name="messageSelector">
             <property name="styleSheet">
              <string notr="true">background-color: rgb(162, 162, 162);</string>
             </property>

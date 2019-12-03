@@ -8,6 +8,7 @@
 #include <QTreeWidgetItem>
 #include <qcombobox.h>
 #include "networkcontroller.h"
+#include <qtextbrowser.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -32,12 +33,16 @@ private slots:
 
     void on_pushButton_2_clicked();
 
+    void on_TypeSelector_currentIndexChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
 
     QString currentPort;
 
     NetworkController *nCon;
+
+    QTextBrowser *msgBrowser;
     QTreeWidget *treeWidget;
     QLineEdit *inboundPortSelector,*outboundPortSelector;
     QComboBox *typeBox;

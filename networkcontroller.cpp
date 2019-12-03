@@ -28,9 +28,11 @@ void NetworkController::stopListening()
 
 qint64 NetworkController::sendFrame(Frame_PTU ptu,ushort port)
 {
-    QUdpSocket *socket = new QUdpSocket(this);
+    QUdpSocket *socket = new QUdpSocket();
 
-    return socket->writeDatagram(ptu.raw,150,QHostAddress::LocalHost,port);
+    qint64 bytes_send = socket->writeDatagram(ptu.raw,FRAME_SIZE,QHostAddress::LocalHost,port);
+
+    return bytes_send;
 }
 
 void NetworkController::recieve()
